@@ -6,7 +6,7 @@ const express = require('express');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const conString = 'postgres://localhost:5432';
+const conString = process.env.DATABASE_URL || 'postgres://localhost:5432/kilovolt';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', error => {
@@ -14,7 +14,7 @@ client.on('error', error => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
 // REVIEW: These are routes for requesting HTML resources.
